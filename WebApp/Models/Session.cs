@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SwaggerDemo.WebApp.Models
 {
-    public class MeetupSession
+    public class Session
     {
-        public MeetupSession()
+        public Session()
         {
             Votes = new List<SessionVote>();
         }
@@ -48,23 +48,23 @@ namespace SwaggerDemo.WebApp.Models
 
         public ICollection<SessionVote> Votes { get; set; }
 
-        //public void CancelSession(DateTimeOffset cancelledAt)
-        //{
-        //    CancelledAt = cancelledAt;
-        //    SessionState = SessionState.Cancelled;
-        //    Meetup = null;
-        //}
+        public void CancelSession(DateTimeOffset cancelledAt)
+        {
+            CancelledAt = cancelledAt;
+            SessionState = SessionState.Cancelled;
+            Meetup = null;
+        }
 
-        //public void SkeduleSession(Meetup meetup)
-        //{
-        //    MeetupId = meetup.Id;
-        //    SessionState = SessionState.Skeduled;
-        //}
+        public void ScheduleSession(Meetup meetup)
+        {
+            MeetupId = meetup.Id;
+            SessionState = SessionState.Skeduled;
+        }
 
-        //public void CompleteSession()
-        //{
-        //    SessionState = SessionState.Done;
-        //}
+        public void CompleteSession()
+        {
+            SessionState = SessionState.Done;
+        }
 
     }
 }

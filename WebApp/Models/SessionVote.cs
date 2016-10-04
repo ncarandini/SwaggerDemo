@@ -11,7 +11,7 @@ namespace SwaggerDemo.WebApp.Models
         public int SessionId { get; set; }
 
         [Required]
-        public MeetupSession Session { get; set; }
+        public Session Session { get; set; }
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }

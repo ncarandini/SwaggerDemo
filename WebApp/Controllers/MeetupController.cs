@@ -67,19 +67,19 @@ namespace SwaggerDemo.WebApp.Controllers
         {
             try
             {
-                Expression<Func<Meetup, bool>> serachTextPredicate = op => true;
+                Expression<Func<Meetup, bool>> searchTextPredicate = op => true;
                 if (!string.IsNullOrWhiteSpace(searchText))
                 {
-                    serachTextPredicate = m => m.Title.Contains(searchText) || m.Description.Contains(searchText);
+                    searchTextPredicate = m => m.Title.Contains(searchText) || m.Description.Contains(searchText);
                 }
 
                 using (var ctx = new ApplicationDbContext())
                 {
                     IQueryable<Meetup> query = ctx.Meetups.Include("Sessions");
 
-                    if (serachTextPredicate != null)
+                    if (searchTextPredicate != null)
                     {
-                        query = query.Where(serachTextPredicate);
+                        query = query.Where(searchTextPredicate);
                     }
 
                     if (pageIndex > 1)
@@ -117,14 +117,14 @@ namespace SwaggerDemo.WebApp.Controllers
         [ValidateModelState]
         [Route("")]
         [ResponseType(typeof(int))]
-        public async Task<IHttpActionResult> PostMeetupAsync([FromBody] PostMeetupDto postActivityDto)
+        public async Task<IHttpActionResult> PostMeetupAsync([FromBody] PostMeetupDto postMeetupDto)
         {
             try
             {
-                var validationContext = new ValidationContext(postActivityDto, serviceProvider: null, items: null);
+                var validationContext = new ValidationContext(postMeetupDto, serviceProvider: null, items: null);
                 var validationResults = new List<ValidationResult>();
 
-                var isValid = Validator.TryValidateObject(postActivityDto, validationContext, validationResults);
+                var isValid = Validator.TryValidateObject(postMeetupDto, validationContext, validationResults);
 
                 if (isValid)
                 {
@@ -132,10 +132,10 @@ namespace SwaggerDemo.WebApp.Controllers
                     {
                         var meetup = new Meetup
                         {
-                            Title = postActivityDto.Title,
-                            Description = postActivityDto.Description,
-                            StartAt = postActivityDto.StartAt,
-                            EndAt = postActivityDto.EndAt,
+                            Title = postMeetupDto.Title,
+                            Description = postMeetupDto.Description,
+                            StartAt = postMeetupDto.StartAt,
+                            EndAt = postMeetupDto.EndAt,
                             Sessions = null
                         };
                         ctx.Meetups.Add(meetup);
@@ -146,7 +146,7 @@ namespace SwaggerDemo.WebApp.Controllers
                 }
                 else
                 {
-                    throw new Exception(validationResults?.First()?.ErrorMessage ?? "Activity creation request data is incomplete.");
+                    throw new Exception(validationResults?.First()?.ErrorMessage ?? "Meetup creation request data is incomplete.");
                 }
             }
             catch (Exception ex)
@@ -170,19 +170,19 @@ namespace SwaggerDemo.WebApp.Controllers
         // [ValidateModelState]
         [Route("{meetupId:int}")]
         [ResponseType(typeof(IHttpActionResult))]
-        public async Task<IHttpActionResult> PutMeetupAsync(int meetupId, [FromBody] PutMeetupDto putActivityDto)
+        public async Task<IHttpActionResult> PutMeetupAsync(int meetupId, [FromBody] PutMeetupDto putMeetupDto)
         {
             try
             {
-                if (meetupId != putActivityDto.Id)
+                if (meetupId != putMeetupDto.Id)
                 {
                     throw new Exception("Meetup update request data is incomplete or inconsistent.");
                 }
 
-                var validationContext = new ValidationContext(putActivityDto, serviceProvider: null, items: null);
+                var validationContext = new ValidationContext(putMeetupDto, serviceProvider: null, items: null);
                 var validationResults = new List<ValidationResult>();
 
-                var isValid = Validator.TryValidateObject(putActivityDto, validationContext, validationResults);
+                var isValid = Validator.TryValidateObject(putMeetupDto, validationContext, validationResults);
 
                 if (isValid)
                 {
@@ -196,24 +196,24 @@ namespace SwaggerDemo.WebApp.Controllers
                         }
 
                         // Replace non null values
-                        if (!string.IsNullOrWhiteSpace(putActivityDto.Title))
+                        if (!string.IsNullOrWhiteSpace(putMeetupDto.Title))
                         {
-                            foundMeetup.Title = putActivityDto.Title;
+                            foundMeetup.Title = putMeetupDto.Title;
                         }
 
-                        if (!string.IsNullOrWhiteSpace(putActivityDto.Description))
+                        if (!string.IsNullOrWhiteSpace(putMeetupDto.Description))
                         {
-                            foundMeetup.Description = putActivityDto.Description;
+                            foundMeetup.Description = putMeetupDto.Description;
                         }
 
-                        if (putActivityDto.StartAt.HasValue)
+                        if (putMeetupDto.StartAt.HasValue)
                         {
-                            foundMeetup.StartAt = putActivityDto.StartAt.Value;
+                            foundMeetup.StartAt = putMeetupDto.StartAt.Value;
                         }
 
-                        if (putActivityDto.EndAt.HasValue)
+                        if (putMeetupDto.EndAt.HasValue)
                         {
-                            foundMeetup.EndAt = putActivityDto.EndAt.Value;
+                            foundMeetup.EndAt = putMeetupDto.EndAt.Value;
                         }
 
                         await ctx.SaveChangesAsync();

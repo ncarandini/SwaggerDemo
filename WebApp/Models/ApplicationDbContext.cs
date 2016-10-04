@@ -21,7 +21,7 @@ namespace SwaggerDemo.WebApp.Models
         }
 
         public DbSet<Meetup> Meetups { get; set; }
-        public DbSet<MeetupSession> MeetupSessions { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<SessionVote> SessionVotes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
