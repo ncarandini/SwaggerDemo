@@ -11,7 +11,7 @@ namespace SwaggerDemo.WebApp.Models
     {
         public Meetup()
         {
-            Sessions = new List<MeetupSession>();
+            Sessions = new List<Session>();
         }
 
         public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace SwaggerDemo.WebApp.Models
         [Required]
         public DateTimeOffset EndAt { get; set; }
 
-        public ICollection<MeetupSession> Sessions { get; set; }
+        public ICollection<Session> Sessions { get; set; }
     }
 }

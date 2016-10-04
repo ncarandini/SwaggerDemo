@@ -120,9 +120,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610021550552_FirstMigration.cs" />
-    <Compile Include="Migrations\201610021550552_FirstMigration.Designer.cs">
-      <DependentUpon>201610021550552_FirstMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201610041233119_FirstMigration.cs" />
+    <Compile Include="Migrations\201610041233119_FirstMigration.Designer.cs">
+      <DependentUpon>201610041233119_FirstMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -148,8 +148,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610021550552_FirstMigration.resx">
-      <DependentUpon>201610021550552_FirstMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610041233119_FirstMigration.resx">
+      <DependentUpon>201610041233119_FirstMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

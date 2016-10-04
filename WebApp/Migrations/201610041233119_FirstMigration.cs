@@ -20,7 +20,7 @@ namespace SwaggerDemo.WebApp.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.MeetupSessions",
+                "dbo.Sessions",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -111,7 +111,7 @@ namespace SwaggerDemo.WebApp.Migrations
                         UserId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.MeetupSessions", t => t.SessionId)
+                .ForeignKey("dbo.Sessions", t => t.SessionId)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
                 .Index(t => t.SessionId)
                 .Index(t => t.UserId);
@@ -132,13 +132,13 @@ namespace SwaggerDemo.WebApp.Migrations
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.SessionVotes", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.SessionVotes", "SessionId", "dbo.MeetupSessions");
-            DropForeignKey("dbo.MeetupSessions", "ProponentId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.MeetupSessions", "ModeratorId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.SessionVotes", "SessionId", "dbo.Sessions");
+            DropForeignKey("dbo.Sessions", "ProponentId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Sessions", "ModeratorId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.MeetupSessions", "MeetupId", "dbo.Meetups");
+            DropForeignKey("dbo.Sessions", "MeetupId", "dbo.Meetups");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.SessionVotes", new[] { "UserId" });
             DropIndex("dbo.SessionVotes", new[] { "SessionId" });
@@ -147,16 +147,16 @@ namespace SwaggerDemo.WebApp.Migrations
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.MeetupSessions", new[] { "ModeratorId" });
-            DropIndex("dbo.MeetupSessions", new[] { "ProponentId" });
-            DropIndex("dbo.MeetupSessions", new[] { "MeetupId" });
+            DropIndex("dbo.Sessions", new[] { "ModeratorId" });
+            DropIndex("dbo.Sessions", new[] { "ProponentId" });
+            DropIndex("dbo.Sessions", new[] { "MeetupId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.SessionVotes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.MeetupSessions");
+            DropTable("dbo.Sessions");
             DropTable("dbo.Meetups");
         }
     }

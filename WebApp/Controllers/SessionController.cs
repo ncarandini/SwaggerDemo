@@ -84,19 +84,13 @@ namespace SwaggerDemo.WebApp.Controllers
         {
             try
             {
-                Expression<Func<Session, bool>> searchTextPredicate = op => true;
-                if (!string.IsNullOrWhiteSpace(searchText))
-                {
-                    searchTextPredicate = m => m.Title.Contains(searchText) || m.Description.Contains(searchText);
-                }
-
                 using (var ctx = new ApplicationDbContext())
                 {
-                    IQueryable<Session> query = ctx.Sessions.Include("Sessions");
+                    IQueryable<Session> query = ctx.Sessions.Include(s => s.Votes);
 
-                    if (searchTextPredicate != null)
+                    if (!string.IsNullOrWhiteSpace(searchText))
                     {
-                        query = query.Where(searchTextPredicate);
+                        query = query.Where(s => s.Title.Contains(searchText) || s.Description.Contains(searchText));
                     }
 
                     if (pageIndex > 1)
@@ -108,6 +102,19 @@ namespace SwaggerDemo.WebApp.Controllers
                     {
                         query = query.Take(pageSize);
                     }
+
+                    var sessions = query.Select(s => new GetSessionDto
+                    {
+                        Title = s.Title,
+                        Description = s.Description,
+                        SessionState = s.SessionState,
+                        ProposedAt = s.ProposedAt,
+                        CancelledAt = s.CancelledAt,
+                        ProponentFullName = s.Proponent.Fullname,
+                        ModeratorFullName = s.Moderator.Fullname,
+                        NumOfVotes = s.Votes.Count,
+                        MeetupId = s.MeetupId
+                    });
 
                     return Ok(await query.ToListAsync());
                 }
@@ -138,20 +145,13 @@ namespace SwaggerDemo.WebApp.Controllers
         {
             try
             {
-                Expression<Func<Session, bool>> searchTextPredicate = op => true;
-                if (!string.IsNullOrWhiteSpace(searchText))
-                {
-                    searchTextPredicate = m => (m.SessionState == SessionState.Proposed)
-                        && (m.Title.Contains(searchText) || m.Description.Contains(searchText));
-                }
-
                 using (var ctx = new ApplicationDbContext())
                 {
                     IQueryable<Session> query = ctx.Sessions.Include("Sessions");
 
-                    if (searchTextPredicate != null)
+                    if (!string.IsNullOrWhiteSpace(searchText))
                     {
-                        query = query.Where(searchTextPredicate);
+                        query = query.Where(s => s.Title.Contains(searchText) || s.Description.Contains(searchText));
                     }
 
                     if (pageIndex > 1)
@@ -163,6 +163,19 @@ namespace SwaggerDemo.WebApp.Controllers
                     {
                         query = query.Take(pageSize);
                     }
+
+                    var sessions = query.Select(s => new GetSessionDto
+                    {
+                        Title = s.Title,
+                        Description = s.Description,
+                        SessionState = s.SessionState,
+                        ProposedAt = s.ProposedAt,
+                        CancelledAt = s.CancelledAt,
+                        ProponentFullName = s.Proponent.Fullname,
+                        ModeratorFullName = s.Moderator.Fullname,
+                        NumOfVotes = s.Votes.Count,
+                        MeetupId = s.MeetupId
+                    });
 
                     return Ok(await query.ToListAsync());
                 }

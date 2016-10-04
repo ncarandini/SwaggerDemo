@@ -13,7 +13,7 @@ namespace SwaggerDemo.WebApp.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610021550552_FirstMigration"; }
+            get { return "201610041233119_FirstMigration"; }
         }
         
         string IMigrationMetadata.Source
