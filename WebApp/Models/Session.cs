@@ -30,7 +30,7 @@ namespace SwaggerDemo.WebApp.Models
 
         public DateTimeOffset? CancelledAt { get; set; }
 
-        public int MeetupId { get; set; }
+        public int? MeetupId { get; set; }
 
         public Meetup Meetup { get; set; }
 

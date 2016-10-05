@@ -29,7 +29,7 @@ namespace SwaggerDemo.WebApp.Migrations
                         SessionState = c.Int(nullable: false),
                         ProposedAt = c.DateTimeOffset(nullable: false, precision: 7),
                         CancelledAt = c.DateTimeOffset(precision: 7),
-                        MeetupId = c.Int(nullable: false),
+                        MeetupId = c.Int(),
                         ProponentId = c.String(nullable: false, maxLength: 128),
                         ModeratorId = c.String(nullable: false, maxLength: 128),
                     })

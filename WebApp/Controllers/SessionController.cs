@@ -44,6 +44,7 @@ namespace SwaggerDemo.WebApp.Controllers
                         .Where(m => m.Id == sessionId)
                         .Select(s => new GetSessionDto
                         {
+                            Id = s.Id,
                             Title = s.Title,
                             Description = s.Description,
                             SessionState = s.SessionState,
@@ -105,6 +106,7 @@ namespace SwaggerDemo.WebApp.Controllers
 
                     var sessions = query.Select(s => new GetSessionDto
                     {
+                        Id = s.Id,
                         Title = s.Title,
                         Description = s.Description,
                         SessionState = s.SessionState,
@@ -170,6 +172,7 @@ namespace SwaggerDemo.WebApp.Controllers
 
                     var sessions = query.Select(s => new GetSessionDto
                     {
+                        Id = s.Id,
                         Title = s.Title,
                         Description = s.Description,
                         SessionState = s.SessionState,

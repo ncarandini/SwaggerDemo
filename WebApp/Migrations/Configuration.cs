@@ -139,7 +139,7 @@ namespace SwaggerDemo.WebApp.Migrations
                     Proponent = marioRossi,
                     Moderator = francoVerdi,
                     SessionState = SessionState.Done,
-                    Meetup = firstMeetup,
+                    Meetup = secondMeetup,
                     Votes = null
                 };
                 context.Sessions.Add(session_2_1);
@@ -157,7 +157,7 @@ namespace SwaggerDemo.WebApp.Migrations
                     Proponent = francoVerdi,
                     Moderator = francoVerdi,
                     SessionState = SessionState.Proposed,
-                    Meetup = firstMeetup,
+                    Meetup = null,
                     Votes = null
                 };
                 context.Sessions.Add(session_A);

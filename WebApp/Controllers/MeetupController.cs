@@ -30,15 +30,41 @@ namespace SwaggerDemo.WebApp.Controllers
         /// <returns>A specific Meetup based on the ID of your request</returns>
         [RequireAppToken]
         [Route("{meetupId:int}")]
-        [ResponseType(typeof(Meetup))]
+        [ResponseType(typeof(GetMeetupDto))]
         public async Task<IHttpActionResult> GetMeetupByIdAsync(int meetupId)
         {
             try
             {
                 using (var ctx = new ApplicationDbContext())
                 {
-                    var meetup = await ctx.Meetups.Include("Sessions").FirstOrDefaultAsync(m => m.Id == meetupId);
-                    return Ok(meetup);
+                    var getMeetupDto = await ctx.Meetups
+                        .Include(m => m.Sessions)
+                        .Include("Sessions.Votes")
+                        .Where(m => m.Id == meetupId)
+                        .Select(m => new GetMeetupDto
+                        {
+                            Id = m.Id,
+                            Title = m.Title,
+                            Description = m.Description,
+                            StartAt = m.StartAt,
+                            EndAt = m.EndAt,
+                            Sessions = m.Sessions.Select(s => new GetSessionDto
+                            {
+                                Id = s.Id,
+                                Title = s.Title,
+                                Description = s.Description,
+                                SessionState = s.SessionState,
+                                ProposedAt = s.ProposedAt,
+                                CancelledAt = s.CancelledAt,
+                                ProponentFullName = s.Proponent.FirstName + " " + s.Proponent.LastName,
+                                ModeratorFullName = s.Moderator.FirstName + " " + s.Moderator.LastName,
+                                NumOfVotes = s.Votes.Count,
+                                MeetupId = s.MeetupId
+                            }).ToList()
+                        })
+                        .FirstOrDefaultAsync();
+
+                    return Ok(getMeetupDto);
                 }
             }
             catch (Exception ex)
@@ -62,24 +88,18 @@ namespace SwaggerDemo.WebApp.Controllers
         [RequireAppToken]
         [Route("")]
         [ValidateModelState]
-        [ResponseType(typeof(List<Meetup>))]
+        [ResponseType(typeof(List<GetMeetupDto>))]
         public async Task<IHttpActionResult> GetMeetupsAsync(string searchText = null, int pageIndex = 1, int pageSize = Defaults.PAGE_SIZE)
         {
             try
             {
-                Expression<Func<Meetup, bool>> searchTextPredicate = op => true;
-                if (!string.IsNullOrWhiteSpace(searchText))
-                {
-                    searchTextPredicate = m => m.Title.Contains(searchText) || m.Description.Contains(searchText);
-                }
-
                 using (var ctx = new ApplicationDbContext())
                 {
-                    IQueryable<Meetup> query = ctx.Meetups.Include("Sessions");
+                    IQueryable<Meetup> query = ctx.Meetups.Include("Sessions").Include("Sessions.Votes");
 
-                    if (searchTextPredicate != null)
+                    if (!string.IsNullOrWhiteSpace(searchText))
                     {
-                        query = query.Where(searchTextPredicate);
+                        query = query.Where(m => m.Title.Contains(searchText) || m.Description.Contains(searchText));
                     }
 
                     if (pageIndex > 1)
@@ -92,7 +112,29 @@ namespace SwaggerDemo.WebApp.Controllers
                         query = query.Take(pageSize);
                     }
 
-                    return Ok(await query.ToListAsync());
+                    var meetups = query.Select(m => new GetMeetupDto
+                    {
+                        Id = m.Id,
+                        Title = m.Title,
+                        Description = m.Description,
+                        StartAt = m.StartAt,
+                        EndAt = m.EndAt,
+                        Sessions = m.Sessions.Select(s => new GetSessionDto
+                        {
+                            Id = s.Id,
+                            Title = s.Title,
+                            Description = s.Description,
+                            SessionState = s.SessionState,
+                            ProposedAt = s.ProposedAt,
+                            CancelledAt = s.CancelledAt,
+                            ProponentFullName = s.Proponent.FirstName + " " + s.Proponent.LastName,
+                            ModeratorFullName = s.Moderator.FirstName + " " + s.Moderator.LastName,
+                            NumOfVotes = s.Votes.Count,
+                            MeetupId = s.MeetupId
+                        }).ToList()
+                    });
+
+                    return Ok(await meetups.ToListAsync());
                 }
             }
             catch (Exception ex)
