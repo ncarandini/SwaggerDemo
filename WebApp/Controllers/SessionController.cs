@@ -147,11 +147,15 @@ namespace SwaggerDemo.WebApp.Controllers
             {
                 using (var ctx = new ApplicationDbContext())
                 {
-                    IQueryable<Session> query = ctx.Sessions.Include("Sessions");
+                    IQueryable<Session> query = ctx.Sessions.Include(s => s.Votes);
 
                     if (!string.IsNullOrWhiteSpace(searchText))
                     {
-                        query = query.Where(s => s.Title.Contains(searchText) || s.Description.Contains(searchText));
+                        query = query.Where(s => (s.SessionState == SessionState.Proposed) && (s.Title.Contains(searchText) || s.Description.Contains(searchText)));
+                    }
+                    else
+                    {
+                        query = query.Where(s => s.SessionState == SessionState.Proposed);
                     }
 
                     if (pageIndex > 1)
@@ -190,7 +194,7 @@ namespace SwaggerDemo.WebApp.Controllers
             }
         }
 
-        // POST: api/v1/activities
+        // POST: api/v1/sessions
         /// <summary>
         /// Creates a new session
         /// </summary>

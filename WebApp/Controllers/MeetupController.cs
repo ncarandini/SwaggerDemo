@@ -105,7 +105,7 @@ namespace SwaggerDemo.WebApp.Controllers
             }
         }
 
-        // POST: api/v1/activities
+        // POST: api/v1/meetups
         /// <summary>
         /// Creates a new meetup
         /// </summary>
