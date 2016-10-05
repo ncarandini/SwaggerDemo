@@ -49,8 +49,8 @@ namespace SwaggerDemo.WebApp.Controllers
                             SessionState = s.SessionState,
                             ProposedAt = s.ProposedAt,
                             CancelledAt = s.CancelledAt,
-                            ProponentFullName = s.Proponent.Fullname,
-                            ModeratorFullName = s.Moderator.Fullname,
+                            ProponentFullName = s.Proponent.FirstName + " " + s.Proponent.LastName,
+                            ModeratorFullName = s.Moderator.FirstName + " " + s.Moderator.LastName,
                             NumOfVotes = s.Votes.Count,
                             MeetupId = s.MeetupId
                         })
@@ -110,13 +110,13 @@ namespace SwaggerDemo.WebApp.Controllers
                         SessionState = s.SessionState,
                         ProposedAt = s.ProposedAt,
                         CancelledAt = s.CancelledAt,
-                        ProponentFullName = s.Proponent.Fullname,
-                        ModeratorFullName = s.Moderator.Fullname,
+                        ProponentFullName = s.Proponent.FirstName + " " + s.Proponent.LastName,
+                        ModeratorFullName = s.Moderator.FirstName + " " + s.Moderator.LastName,
                         NumOfVotes = s.Votes.Count,
                         MeetupId = s.MeetupId
                     });
 
-                    return Ok(await query.ToListAsync());
+                    return Ok(await sessions.ToListAsync());
                 }
             }
             catch (Exception ex)
@@ -175,13 +175,13 @@ namespace SwaggerDemo.WebApp.Controllers
                         SessionState = s.SessionState,
                         ProposedAt = s.ProposedAt,
                         CancelledAt = s.CancelledAt,
-                        ProponentFullName = s.Proponent.Fullname,
-                        ModeratorFullName = s.Moderator.Fullname,
+                        ProponentFullName = s.Proponent.FirstName + " " + s.Proponent.LastName,
+                        ModeratorFullName = s.Moderator.FirstName + " " + s.Moderator.LastName,
                         NumOfVotes = s.Votes.Count,
                         MeetupId = s.MeetupId
                     });
 
-                    return Ok(await query.ToListAsync());
+                    return Ok(await sessions.ToListAsync());
                 }
             }
             catch (Exception ex)

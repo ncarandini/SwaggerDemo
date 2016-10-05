@@ -20,7 +20,7 @@ namespace SwaggerDemo.WebApp.Controllers
     /// </summary>
     [RoutePrefix("api/v1/meetups")]
     [RequireHttps]
-    public class ActivityController : ApiController
+    public class MeetupController : ApiController
     {
         // GET: api/v1/meetups/5
         /// <summary>
